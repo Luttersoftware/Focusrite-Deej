@@ -1,5 +1,19 @@
 ## deej Focusrite edition
 
+Hardware:
+- 5 Bicolor 2mm Tower LEDs
+- 1 warmweiße 2mm Tower LED
+- 5x 220 Ohm Widerstand
+- Altes Focusrite Scarlett Solo Gehäuse
+- Custom (3D-Druck) Frontpanel + Rückseite + interne Träger (STLs gerne auf Anfrage)
+- 4 Potiknobs
+- 4x 10k Potentiometer (logarithmisch)
+- 4 Druckschalter schwarz
+- 1 Druckschalter rot
+- USB-C-Durchführung
+- Arduino nano
+- Waterslide decals & Klarlack
+- M2 & M3 Schrauben und Muttern
 
 
  ===== Arduino Nano Pin-Belegung – Verdrahtung =====
