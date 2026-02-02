@@ -2,6 +2,45 @@
 
 
 
+ ===== Arduino Nano Pin-Belegung – Verdrahtung =====
+  
+            +5V
+             |
+             |
+           [Potis]
+    A0 ---|\/|--- GND  <- Poti1
+    A1 ---|\/|--- GND  <- Poti2
+    A2 ---|\/|--- GND  <- Poti3
+    A3 ---|\/|--- GND  <- Poti4
+
+           [Schalter]
+    A4 ---/ --- GND  <- Schalter1 (LOW = AN, HIGH = AUS)
+    A5 ---/ --- GND  <- Schalter2
+    A6 ---/ --- GND  <- Schalter3
+    A7 ---/ --- GND  <- Schalter4
+
+           [Bicolor-LEDs]
+       D2 ──[R]─> Grün ┌─┐
+       D3 ──[R]─> Rot  └─┘  <- LED1
+       D4 ──[R]─> Grün ┌─┐
+       D5 ──[R]─> Rot  └─┘  <- LED2
+       D6 ──[R]─> Grün ┌─┐
+       D7 ──[R]─> Rot  └─┘  <- LED3
+       D8 ──[R]─> Grün ┌─┐
+       D9 ──[R]─> Rot  └─┘  <- LED4
+
+          [Weiße LED immer an]
+       D10 ──[R]─> LED ── GND
+
+  Hinweise:
+  - [R] = 220–330 Ω Widerstand
+  - Schalter: zwischen Pin und GND
+  - Bicolor-LEDs: jeder Pin + eigener Widerstand
+  - Weiße LED: Pin D10 über Widerstand an Anode, Kathode an GND
+  - Poti linearisiert im Sketch (logarithmisch -> linear)
+*/
+
+
 ## Original Repo Readme
 
 MIT License
