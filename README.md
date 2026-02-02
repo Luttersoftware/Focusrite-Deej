@@ -1,8 +1,8 @@
 ## deej Focusrite edition
 
 Hardware:
-- 5 Bicolor 2mm Tower LEDs
-- 1 warmweiße 2mm Tower LED
+- 5 Bicolor 2mm Tower LEDs 20mA
+- 1 warmweiße 2mm Tower LED 20mA
 - 5x 220 Ohm Widerstand
 - Altes Focusrite Scarlett Solo Gehäuse
 - Custom (3D-Druck) Frontpanel + Rückseite + interne Träger (STLs gerne auf Anfrage)
