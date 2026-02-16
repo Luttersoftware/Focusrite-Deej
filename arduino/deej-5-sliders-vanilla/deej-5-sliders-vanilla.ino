@@ -103,7 +103,8 @@ void updateSendValues() {
 
       int raw = analogRead(potPins[i]);
       float norm = raw / 1023.0;
-      norm = norm * norm;
+      norm = pow(norm, 2.2);
+
       sendValues[i] = int(norm * 1023 + 0.5);
     }
   }
