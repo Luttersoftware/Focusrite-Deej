@@ -1,5 +1,6 @@
 #include <math.h>
 
+// ===== ANTIPARALLELE BICOLOR LED PINS =====
 const int led1A = 2;
 const int led1B = 3;
 const int led2A = 4;
@@ -9,14 +10,22 @@ const int led3B = 7;
 const int led4A = 8;
 const int led4B = 9;
 
+// ===== WEISSE LED =====
 const int whiteLED = 10;
+
+// ===== GLOBALER MUTE =====
 const int muteButtonPin = 11;
 
+// ===== ANZAHL KANÄLE =====
 const int NUM_CHANNELS = 4;
 
+// ===== KANAL-TASTER =====
 const int channelButtonPins[NUM_CHANNELS] = {A0, A1, A2, A3};
+
+// ===== POTIS =====
 const int potPins[NUM_CHANNELS] = {A4, A5, A6, A7};
 
+// ===== VARIABLEN =====
 int sendValues[NUM_CHANNELS];
 bool channelEnabled[NUM_CHANNELS] = {true, true, true, true};
 bool lastButtonState[NUM_CHANNELS];
@@ -29,13 +38,17 @@ unsigned long lastBlinkTime = 0;
 const unsigned long blinkInterval = 400;
 
 unsigned long lastSend = 0;
-const unsigned long sendInterval = 40;
+const unsigned long sendInterval = 40; // ~25Hz
 
+// ===== SETUP =====
 void setup() {
 
   Serial.begin(9600);
+
+  // CH340 + Win11 Stabilisierung
   delay(4000);
 
+  // Start-Frames senden
   for (int i = 0; i < 50; i++) {
     Serial.println("1|2|3|4");
     delay(30);
@@ -60,6 +73,7 @@ void setup() {
   }
 }
 
+// ===== LOOP =====
 void loop() {
 
   readMuteButton();
@@ -73,6 +87,8 @@ void loop() {
     sendValuesSerial();
   }
 }
+
+// ===== FUNKTIONEN =====
 
 void readMuteButton() {
   int reading = digitalRead(muteButtonPin);
@@ -94,18 +110,32 @@ void readChannelButtons() {
   }
 }
 
+// ===== LINEARISIERUNG FÜR LOG-POTIS =====
 void updateSendValues() {
+
+  static float smoothValues[NUM_CHANNELS] = {0,0,0,0};
+  const float smoothing = 0.15;   // 0.05 = sehr weich | 0.3 = direkter
+
   for (int i = 0; i < NUM_CHANNELS; i++) {
 
     if (!channelEnabled[i] || muteActive) {
-      sendValues[i] = 0;
-    } else {
+      sendValues[i] = 1023;
+      smoothValues[i] = 1023;   // wichtig: kein Nachziehen nach Mute
+    } 
+    else {
 
       int raw = analogRead(potPins[i]);
       float norm = raw / 1023.0;
-      norm = pow(norm, 2.2);
 
-      sendValues[i] = int(norm * 1023 + 0.5);
+      // sanftere Anti-Log-Korrektur
+      norm = pow(norm, 1.6);
+
+      float target = norm * 1023.0;
+
+      // Exponential smoothing
+      smoothValues[i] = smoothValues[i] + smoothing * (target - smoothValues[i]);
+
+      sendValues[i] = (int)(smoothValues[i] + 0.5);
     }
   }
 }
@@ -157,6 +187,7 @@ int getLEDB(int i) {
   return pins[i];
 }
 
+// ===== STABILES SERIAL SENDEN =====
 void sendValuesSerial() {
 
   static char line[32];
